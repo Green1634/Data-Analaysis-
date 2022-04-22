@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[5]:
 
 
 import pandas as pd
@@ -13,7 +13,7 @@ import pandas as pd
 
 
 
-# In[36]:
+# In[6]:
 
 
 Age = [12, 34, 45, 34, 23, 45, 12, 12, 13, None]
@@ -25,19 +25,19 @@ infectionWindow = [4, 6, 6, 8, 9, None, 4, 6, 8, 1000]
 Genotype = ['AA', 'AS', 'AC', 'SC', 'SS', 'AA', 'AS', 'AS', 'AC', 'SS']
 
 
-# In[37]:
+# In[7]:
 
 
 patientData = [Age, Gender, monthsick, MalariaParasiteDensity, Community, infectionWindow, Genotype]
 
 
-# In[38]:
+# In[8]:
 
 
 df = pd.DataFrame()
 
 
-# In[40]:
+# In[9]:
 
 
 df['Age'] = Age
@@ -49,59 +49,175 @@ df['infectionWindow'] = infectionWindow
 df['Genotype'] = Genotype
 
 
-# In[41]:
+# In[10]:
 
 
 df
 
 
-# In[43]:
+# In[11]:
 
 
 filepath = 'C:/dataset/'
 filename = 'diabetes.csv'
 
 
-# In[44]:
+# In[12]:
 
 
 dataset = pd.read_csv(filepath + filename)
 
 
-# In[45]:
+# In[13]:
 
 
 dataset
 
 
-# In[46]:
+# In[14]:
 
 
 dataset.size
 
 
-# In[47]:
+# In[15]:
 
 
 dataset.info()
 
 
-# In[48]:
+# In[16]:
 
 
 dataset.describe()
 
 
-# In[51]:
+# In[17]:
 
 
 import matplotlib.pyplot as plt
+
+
+# In[19]:
+
+
+dataset.columns
+
+
+# In[22]:
+
+
+newData = dataset.loc[:, ['ID', 'No_Pation', 'AGE', 'Urea', 'Cr', 'HbA1c', 'Chol', 'TG',
+       'HDL', 'LDL', 'VLDL', 'BMI']]
+
+newData
+
+
+# In[24]:
+
+
+from pandas import read_csv 
+from numpy import set_printoptions
+from sklearn.preprocessing import MinMaxScaler 
+
+dataframe = newData 
+array = dataframe.values
+
+x = array[:,0:11]
+y = array[:, 11]
+demo = MinMaxScaler(feature_range=(0, 1))
+rescaledX = demo.fit_transform(x)
+
+set_printoptions(precision=3)
+print(rescaledX[0:5, :])
+
+
+# In[25]:
+
+
+rescaledXdf = pd.DataFrame(rescaledX)
+rescaledXdf.columns = ['ID', 'No_Pation', 'AGE', 'Urea', 'Cr', 'HbA1c', 'Chol', 'TG',
+       'HDL', 'LDL', 'VLDL']
+rescaledXdf
+
+
+# In[26]:
+
+
+rescaledXdf.describe()
+
+
+# In[27]:
+
+
+from sklearn.preprocessing import Normalizer
+from pandas import read_csv
+from numpy import set_printoptions
+
+array = rescaledXdf.values
+
+x = array[:, 0:12]
+scaler = Normalizer().fit(x)
+normalizedX = scaler.transform(x)
+
+set_printoptions(precision=5)
+print(normalizedX[0:5, :])
+
+
+# In[28]:
+
+
+normalizedX_df = pd.DataFrame(normalizedX)
+normalizedX_df.columns = ['ID', 'No_Pation', 'AGE', 'Urea', 'Cr', 'HbA1c', 'Chol', 'TG',
+       'HDL', 'LDL', 'VLDL']
+normalizedX_df
+
+
+# In[29]:
+
+
+normalizedX_df.describe()
+
+
+# In[30]:
+
+
+normalizedX_df['AGE'].plot(kind= 'density')
+
+
+# In[ ]:
+
+
+from sklearn.preprocessing import StandardScaler
+from pandas import read_csv
+from numpy import set_printoptions
+
+array = rescaledXdf.values
+
+x = array[:, 0:12]
+scaler = Normalizer().fit(x)
+normalizedX = scaler.transform(x)
+
+set_printoptions(precision=5)
+print(normalizedX[0:5, :])
+
+
+# In[ ]:
+
+
+
 
 
 # In[52]:
 
 
 dataset['AGE'].plot(kind='density')
+
+
+# In[ ]:
+
+
+
 
 
 # In[55]:
@@ -135,6 +251,12 @@ plt.hist(dataset.HDL)
 
 
 # In[ ]:
+
+
+
+
+
+# In[2]:
 
 
 
